@@ -2,6 +2,8 @@ import React from 'react'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import "./index.css"
+import Cookies from 'js-cookie'
+import { redirect } from 'react-router-dom'
 
 
 
@@ -25,7 +27,8 @@ const onchangeuserPassword = (event) =>{
 setUserpassword(event.target.value)
 }
 
-const onSubmitSuccess = () => {
+const onSubmitSuccess = (jwtToken) => {
+  Cookies.set("jwt_token", jwtToken,{expires: 30})
   navigate("/",{replace: true})
 }
 
@@ -35,30 +38,30 @@ const onSubmitSuccess = () => {
   }
 
   const submitForm = async event =>{
-    event.prevenDefault();
-    const userDetails = {username, userPassword};
+    event.preventDefault();
+    const userDetails = {username, password: userPassword};
     const url = 'https://apis.ccbp.in/login';
     const options = {
       method: 'POST',
       body: JSON.stringify(userDetails),
 
     };
-
-
-    
       const response = await fetch (url,options);
       const data = await response.json();
-      console.log(data)
+     
   
       if (response.ok === true) {
-        onSubmitSuccess();
+        onSubmitSuccess(data.jwt_token);
 
       } else {
         onSubmitFailure(data.error_msg)
       }
     }
   
-
+const jwtToken = Cookies.get("jwt_token")
+if (jwtToken !== undefined){
+  return <redirect to="/" />
+}
   
 
 
@@ -85,7 +88,7 @@ const onSubmitSuccess = () => {
             </label>
             <input className='password-input-field' id='password' type='password' placeholder='Password' onChange={onchangeuserPassword} value={userPassword} />
         </div>
-        <button className='login-button' type='button'>Login</button>
+        <button className='login-button' type='submit' >Login</button>
         {showSubmitError && <p>*{errorMsg}</p>}
       </form>
      
