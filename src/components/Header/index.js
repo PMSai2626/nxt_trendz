@@ -1,7 +1,16 @@
 import React from 'react'
 import "./index.css"
+import {useHistory} from "react-router-dom";
+import Cookies from 'js-cookie';
 
 const Header = () => {
+
+  const history = useHistory();
+
+  const onClickLogout = () => {
+    Cookies.remove('jwt_token');
+    history.replace('/login');
+  };
   return (
     <div>
        <nav className="nav-header">
@@ -33,7 +42,7 @@ const Header = () => {
           <li className="nav-menu-item">Products</li>
           <li className="nav-menu-item">Cart</li>
         </ul>
-        <button type="button" className="logout-desktop-btn">
+        <button type="button" className="logout-desktop-btn" onClick={onClickLogout} >
           Logout
         </button>
       </div>

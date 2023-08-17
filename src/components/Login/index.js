@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import "./index.css"
 import Cookies from 'js-cookie'
-import { redirect } from 'react-router-dom'
+
 
 
 
@@ -60,7 +60,7 @@ const onSubmitSuccess = (jwtToken) => {
   
 const jwtToken = Cookies.get("jwt_token")
 if (jwtToken !== undefined){
-  return <redirect to="/" />
+  navigate("/")
 }
   
 

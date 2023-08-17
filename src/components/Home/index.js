@@ -1,8 +1,18 @@
 import React from 'react'
 import Header from '../Header'
 import "./index.css"
+import { useNavigate } from 'react-router-dom'
+import Cookies from 'js-cookie'
 
 const Home = () => {
+  const navigate = useNavigate()
+
+
+  const jwtToken = Cookies.get("jwt_token")
+  if (jwtToken === undefined){
+   navigate("/login")
+  }
+
   return (
     <>
     <Header />
